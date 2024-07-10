@@ -1,10 +1,9 @@
 package com.ztingfg.services;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.github.pagehelper.PageInfo;
-import com.github.pagehelper.page.PageMethod;
 import com.google.common.hash.Hashing;
 import com.ztinfg.utils.StringUtil;
 import com.ztingfg.comment.BizStatus;
@@ -22,7 +21,6 @@ import org.springframework.stereotype.Service;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 
 /**
  * <p>
@@ -111,10 +109,8 @@ public class UserService extends ServiceImpl<UserMapper, User> implements IServi
     }
 
     public PaginationResult<User> getUserListManage(Pagination pagination) {
-        PageMethod.startPage(pagination.getPage(), pagination.getPageSize());
-        List<User> users = list();
-        PageInfo<User> pageInfo = PageInfo.of(users);
-        return PaginationResult.from(users, pageInfo.isHasNextPage(), pageInfo.getTotal());
+        Page<User> page = page(Page.of(pagination.getPage(), pagination.getPageSize()));
+        return PaginationResult.from(page.getRecords(), page.getTotal());
     }
 
     public void editUserRole(UserRole userRole) {

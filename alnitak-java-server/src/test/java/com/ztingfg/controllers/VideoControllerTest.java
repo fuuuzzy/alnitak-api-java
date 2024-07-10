@@ -1,6 +1,9 @@
 package com.ztingfg.controllers;
 
-import com.ztingfg.services.VideoService;
+import com.ztingfg.entities.User;
+import com.ztingfg.pagination.Pagination;
+import com.ztingfg.pagination.PaginationResult;
+import com.ztingfg.services.UserService;
 import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -9,11 +12,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 class VideoControllerTest {
 
     @Resource
-    private VideoService videoService;
+    private UserService userService;
 
     @Test
     void getVideo() {
-        System.out.println("123");
-        VideoDesc video = videoService.getVideo(1L);
+        Pagination pagination = new Pagination();
+        PaginationResult<User> userListManage = userService.getUserListManage(pagination);
     }
 }

@@ -14,6 +14,7 @@
         <module>alnitak-java-comment</module>
         <module>alnitak-java-generator</module>
     </modules>
+
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
@@ -24,13 +25,20 @@
         <guava.version>32.1.1-jre</guava.version>
         <mybatis.version>3.5.7</mybatis.version>
         <mybatis.spring.verison>3.0.3</mybatis.spring.verison>
-        <page.version>2.1.0</page.version>
         <jwt.version>0.9.3</jwt.version>
         <lombok.version>1.18.32</lombok.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
             <dependency>
                 <groupId>org.bitbucket.b_c</groupId>
                 <artifactId>jose4j</artifactId>
@@ -41,14 +49,6 @@
                 <groupId>com.ztinfg</groupId>
                 <artifactId>alnitak-java-comment</artifactId>
                 <version>${alnitak.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-dependencies</artifactId>
-                <version>${spring-boot.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
             </dependency>
 
             <dependency>
@@ -98,12 +98,6 @@
                 <artifactId>lombok</artifactId>
                 <version>${lombok.version}</version>
                 <scope>provided</scope>
-            </dependency>
-
-            <dependency>
-                <groupId>com.github.pagehelper</groupId>
-                <artifactId>pagehelper-spring-boot-starter</artifactId>
-                <version>${page.version}</version>
             </dependency>
 
         </dependencies>
