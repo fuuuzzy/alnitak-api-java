@@ -2,7 +2,7 @@ package com.ztingfg.controllers;
 
 import com.ztingfg.bo.SessionInfo;
 import com.ztingfg.comment.GenericResult;
-import com.ztingfg.services.SendService;
+import com.ztingfg.services.SendMailService;
 import com.ztingfg.services.SessionService;
 import com.ztingfg.vo.RefreshTokenRequest;
 import com.ztingfg.vo.SendCodeRequest;
@@ -23,7 +23,7 @@ public class SessionController {
     private SessionService sessionService;
 
     @Resource
-    private SendService sendService;
+    private SendMailService sendService;
 
     @PostMapping("/v1/auth/login")
     public GenericResult<SessionInfo> createSession(@Valid @RequestBody SessionRequest sessionRequest) {

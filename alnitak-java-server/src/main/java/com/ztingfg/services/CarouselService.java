@@ -2,8 +2,8 @@ package com.ztingfg.services;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.ztingfg.entities.Resource;
-import com.ztingfg.mappers.ResourceMapper;
+import com.ztingfg.entities.Carousel;
+import com.ztingfg.mappers.CarouselMapper;
 import org.springframework.stereotype.Service;
 
 /**
@@ -15,6 +15,6 @@ import org.springframework.stereotype.Service;
  * @since 2024-07-10
  */
 @Service
-public class ResourceServiceImp extends ServiceImpl<ResourceMapper, Resource> implements IService<Resource> {
+public class CarouselService extends ServiceImpl<CarouselMapper, Carousel> implements IService<Carousel> {
 
 }

@@ -16,6 +16,8 @@ import com.ztingfg.vo.RegisterRequest;
 import com.ztingfg.vo.SessionRequest;
 import com.ztingfg.vo.UserRole;
 import jakarta.annotation.Resource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -33,14 +35,16 @@ import java.nio.charset.StandardCharsets;
 @Service
 public class UserService extends ServiceImpl<UserMapper, User> implements IService<User> {
 
-    @Resource
-    private UserMapper userMapper;
+    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
     @Value("${account.app.salt}")
     private String appKey;
 
     @Resource
-    private SendService sendService;
+    private UserMapper userMapper;
+
+    @Resource
+    private SendMailService sendService;
 
     public User queryAccountById(Long uid) {
         User user = userMapper.selectOne(new LambdaQueryWrapper<>(User.class)
@@ -93,6 +97,7 @@ public class UserService extends ServiceImpl<UserMapper, User> implements IServi
         try {
             this.save(user);
         } catch (Exception e) {
+            logger.error("register error: {}", e.getMessage());
             throw new BusinessException(BizStatus.AccountExists);
         }
     }

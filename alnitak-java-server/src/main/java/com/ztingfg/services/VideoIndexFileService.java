@@ -15,6 +15,6 @@ import org.springframework.stereotype.Service;
  * @since 2024-07-10
  */
 @Service
-public class VideoIndexFileServiceImp extends ServiceImpl<VideoIndexFileMapper, VideoIndexFile> implements IService<VideoIndexFile> {
+public class VideoIndexFileService extends ServiceImpl<VideoIndexFileMapper, VideoIndexFile> implements IService<VideoIndexFile> {
 
 }

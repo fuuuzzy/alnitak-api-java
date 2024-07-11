@@ -1,11 +1,9 @@
 package com.ztingfg.entities;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.Getter;
-import lombok.Setter;
+import com.baomidou.mybatisplus.annotation.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -19,19 +17,25 @@ import java.time.LocalDateTime;
  */
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @TableName("video")
 public class Video {
 
     @TableId(value = "id", type = IdType.AUTO)
+    @JsonProperty("vid")
     private Long id;
 
-    @TableField("created_at")
+    @TableField(value = "created_at", fill = FieldFill.INSERT)
     private LocalDateTime createdAt;
 
-    @TableField("updated_at")
+    @TableField(value = "updated_at", fill = FieldFill.UPDATE)
+    @JsonIgnore
     private LocalDateTime updatedAt;
 
     @TableField("deleted_at")
+    @JsonIgnore
     private LocalDateTime deletedAt;
 
     /**
@@ -46,13 +50,14 @@ public class Video {
     /**
      * 视频简介
      */
-    @TableField("desc")
+    @TableField("`desc`")
     private String desc;
 
     /**
      * 用户ID
      */
     @TableField("uid")
+    @JsonIgnore
     private Long uid;
 
     /**

@@ -6,9 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -24,6 +22,8 @@ import java.time.LocalDateTime;
 @Setter
 @TableName("user")
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
 
     @TableId(value = "id", type = IdType.AUTO)

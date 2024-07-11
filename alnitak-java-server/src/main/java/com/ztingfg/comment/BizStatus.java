@@ -62,7 +62,7 @@ public enum BizStatus {
 
     TenantError(HttpStatus.INTERNAL_SERVER_ERROR, 2001, "操作组织异常"),
 
-    uploadVideoImageError(HttpStatus.INTERNAL_SERVER_ERROR, 2003, "上传视频封面失败"),
+    mkdirDirectoryError(HttpStatus.INTERNAL_SERVER_ERROR, 2003, "创建文件夹失败"),
 
     FBError(HttpStatus.INTERNAL_SERVER_ERROR, 2004, "操作facebook异常"),
 
@@ -91,6 +91,8 @@ public enum BizStatus {
     FacebookStateNotMatch(HttpStatus.BAD_REQUEST, 3000, "facebook callback state not match"),
 
     FilenameNotExists(HttpStatus.BAD_REQUEST, 3001, "文件名不存在"),
+
+    FileUploadError(HttpStatus.BAD_REQUEST, 3003, "文件上传失败"),
 
     PartitionExists(HttpStatus.BAD_REQUEST, 3002, "分区已存在");
 

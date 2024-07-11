@@ -2,4 +2,186 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ztingfg.mappers.VideoMapper">
 
+    <resultMap id="VideoInfo" type="com.ztingfg.bo.video.VideoInfo">
+        <id property="vid" column="v_id"/>
+        <result property="title" column="v_title"/>
+        <result property="cover" column="cover"/>
+        <result property="desc" column="desc"/>
+        <result property="duration" column="v_duration"/>
+        <result property="partitionId" column="partition_id"/>
+        <result property="status" column="v_status"/>
+        <result property="tags" column="tags"/>
+        <result property="copyright" column="copyright"/>
+        <collection property="resource" ofType="com.ztingfg.bo.video.VideoResource">
+            <result property="id" column="r_id"/>
+            <result property="title" column="r_title"/>
+            <result property="duration" column="r_duration"/>
+            <result property="status" column="r_status"/>
+            <result property="createdAt" column="created_at"/>
+            <result property="vid" column="r_vid"/>
+        </collection>
+    </resultMap>
+
+    <resultMap id="VideoReview" type="com.ztingfg.bo.video.VideoReview">
+        <id property="vid" column="v_id"/>
+        <result property="title" column="v_title"/>
+        <result property="cover" column="cover"/>
+        <result property="desc" column="desc"/>
+        <result property="duration" column="v_duration"/>
+        <result property="partitionId" column="partition_id"/>
+        <result property="tags" column="tags"/>
+        <result property="copyright" column="copyright"/>
+        <association property="author" javaType="user">
+            <result property="id" column="u_id"/>
+            <result property="username" column="username"/>
+            <result property="sign" column="sign"/>
+            <result property="avatar" column="avatar"/>
+            <result property="spaceCover" column="space_cover"/>
+            <result property="gender" column="gender"/>
+        </association>
+    </resultMap>
+
+    <resultMap id="VideoDesc" type="com.ztingfg.bo.video.VideoDesc">
+        <id property="vid" column="v_id"/>
+        <id property="uid" column="v_uid"/>
+        <result property="title" column="v_title"/>
+        <result property="cover" column="cover"/>
+        <result property="desc" column="desc"/>
+        <result property="createdAt" column="v_created_at"/>
+        <result property="copyright" column="copyright"/>
+        <result property="tags" column="tags"/>
+        <result property="clicks" column="clicks"/>
+        <result property="partitionId" column="partition_id"/>
+        <result property="duration" column="v_duration"/>
+        <association property="author" javaType="user">
+            <result property="id" column="u_id"/>
+            <result property="username" column="username"/>
+            <result property="sign" column="sign"/>
+            <result property="avatar" column="avatar"/>
+            <result property="spaceCover" column="space_cover"/>
+            <result property="gender" column="gender"/>
+        </association>
+        <collection property="resources" ofType="com.ztingfg.bo.video.VideoResource">
+            <result property="id" column="r_id"/>
+            <result property="vid" column="r_vid"/>
+            <result property="title" column="r_title"/>
+            <result property="duration" column="r_duration"/>
+            <result property="status" column="r_status"/>
+            <result property="createdAt" column="r_created_at"/>
+        </collection>
+    </resultMap>
+
+    <select id="getVideoInfo" resultMap="VideoInfo">
+        select v.id       v_id,
+               v.title    v_title,
+               v.cover,
+               v.desc,
+               v.copyright,
+               v.status   v_status,
+               v.partition_id,
+               v.tags,
+               v.duration v_duration,
+               r.id       r_id,
+               r.title    r_title,
+               r.duration r_duration,
+               r.status   r_status,
+               r.created_at,
+               r.vid      r_vid
+        from (select * from video where id = #{vid}) v
+                 left join resource r on r.vid = v.id
+    </select>
+
+    <select id="getVideoById" resultMap="VideoDesc">
+        select v.id         as v_id,
+               v.title      as v_title,
+               v.uid        as v_uid,
+               v.cover,
+               v.partition_id,
+               v.clicks,
+               v.desc,
+               v.created_at as v_created_at,
+               v.duration   as v_duration,
+               v.copyright,
+               u.id         as u_id,
+               u.username,
+               u.sign,
+               u.avatar,
+               u.space_cover,
+               u.gender,
+               r.id         as r_id,
+               r.vid        as r_vid,
+               r.title      as r_title,
+               r.duration   as r_duration,
+               r.status     as r_status,
+               r.created_at as r_created_at
+        from (select * from video where id = #{vid}) v
+                 inner join user u on u.id = v.uid
+                 left join resource r
+                           on r.vid = v.id
+    </select>
+
+    <select id="getVideo" resultMap="VideoDesc">
+        select v.id as v_id,
+        v.title as v_title,
+        v.uid as v_uid,
+        v.cover,
+        v.partition_id,
+        v.clicks,
+        v.desc,
+        v.created_at as v_created_at,
+        v.duration as v_duration,
+        v.copyright,
+        u.id as u_id,
+        u.username,
+        u.sign,
+        u.avatar,
+        u.space_cover,
+        u.gender,
+        r.id as r_id,
+        r.vid as r_vid,
+        r.title as r_title,
+        r.duration as r_duration,
+        r.status as r_status,
+        r.created_at as r_created_at
+        from (select * from video
+        <where>
+            <if test="vid != null">
+                id = #{vid}
+            </if>
+            <if test="partitionId != null">
+                partition_id = #{partitionId}
+            </if>
+        </where>
+        <if test="page != null">
+            limit ${page.offset},${page.limit}
+        </if>
+        ) v
+        inner join user u on u.id = v.uid
+        left join resource r
+        on r.vid = v.id
+    </select>
+
+    <select id="getReviewList" resultMap="VideoReview">
+        select v.id         as v_id,
+               v.title      as v_title,
+               v.uid        as v_uid,
+               v.cover,
+               v.partition_id,
+               v.clicks,
+               v.desc,
+               v.created_at as v_created_at,
+               v.duration   as v_duration,
+               v.copyright,
+               u.id         as u_id,
+               u.username,
+               u.sign,
+               u.avatar,
+               u.space_cover,
+               u.gender
+        from (select *
+              from video
+              limit ${page.offset},${page.limit}) v
+                 inner join user u on u.id = v.uid
+    </select>
+
 </mapper>

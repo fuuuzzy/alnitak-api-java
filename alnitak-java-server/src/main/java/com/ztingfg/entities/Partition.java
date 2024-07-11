@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
  */
 @Getter
 @Setter
-@TableName("partition")
+@TableName("`partition`")
 public class Partition {
 
     @TableId(value = "id", type = IdType.AUTO)
@@ -43,7 +43,7 @@ public class Partition {
     /**
      * 类型:0视频、1文章
      */
-    @TableField("type")
+    @TableField("`type`")
     private Byte type;
 
     /**

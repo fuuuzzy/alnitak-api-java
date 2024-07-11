@@ -67,7 +67,7 @@ public class Carousel {
     /**
      * 是否启用
      */
-    @TableField("use")
+    @TableField("`use`")
     private Boolean use;
 
     /**

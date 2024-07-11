@@ -21,7 +21,7 @@ public class SessionService {
     private TokenService tokenService;
 
     @Resource
-    private SendService sendService;
+    private SendMailService sendService;
 
     public SessionInfo createSession(SessionRequest sessionRequest) {
         User user = userService.validateAccount(sessionRequest);

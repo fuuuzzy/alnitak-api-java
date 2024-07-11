@@ -19,9 +19,9 @@ import java.util.concurrent.Executor;
 import static org.slf4j.LoggerFactory.getLogger;
 
 @Service
-public class SendService {
+public class SendMailService {
 
-    private static final Logger log = getLogger(SendService.class);
+    private static final Logger log = getLogger(SendMailService.class);
 
     @Value("${spring.mail.username}")
     private String fromMail;
