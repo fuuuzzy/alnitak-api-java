@@ -3,10 +3,7 @@ package com.ztingfg.services;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.ztingfg.bo.video.VideoDesc;
-import com.ztingfg.bo.video.VideoInfo;
-import com.ztingfg.bo.video.VideoReview;
-import com.ztingfg.bo.video.VideoTitle;
+import com.ztingfg.bo.video.*;
 import com.ztingfg.comment.BizStatus;
 import com.ztingfg.comment.exception.BusinessException;
 import com.ztingfg.cqrs.cmd.VideoUpdate;
@@ -139,5 +136,11 @@ public class VideoService extends ServiceImpl<VideoMapper, Video> implements ISe
                 .eq(com.ztingfg.entities.Resource::getVid, vid)
                 .eq(com.ztingfg.entities.Resource::getStatus, 0)
                 .list();
+    }
+
+    public PaginationResult<VideoResult> getVideoListManage(Pagination pagination) {
+        Long count = lambdaQuery().count();
+        List<VideoResult> videoResults = videoMapper.getVideoListManage(pagination);
+        return PaginationResult.from(videoResults, count);
     }
 }

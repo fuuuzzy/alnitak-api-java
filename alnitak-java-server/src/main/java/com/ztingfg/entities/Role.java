@@ -43,13 +43,13 @@ public class Role {
     /**
      * 角色代码
      */
-    @TableField("code")
+    @TableField("`code`")
     private String code;
 
     /**
      * 介绍
      */
-    @TableField("desc")
+    @TableField("`desc`")
     private String desc;
 
     /**

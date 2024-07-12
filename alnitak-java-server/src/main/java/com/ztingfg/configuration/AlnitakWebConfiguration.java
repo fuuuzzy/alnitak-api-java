@@ -3,6 +3,8 @@ package com.ztingfg.configuration;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.ztingfg.comment.utils.JsonUtil;
+import com.ztingfg.interceptors.AuthingInterceptor;
+import com.ztingfg.interceptors.TraceInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
@@ -24,13 +26,11 @@ public class AlnitakWebConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        //registry.addInterceptor(new TraceInterceptor())
-        //        .addPathPatterns("/**");
-        //registry.addInterceptor(new AuthingInterceptor())
-        //        .addPathPatterns("/api/v1/**")
-        //        .excludePathPatterns("/api/v1/accounts")
-        //        .excludePathPatterns("/api/v1/sessions/**")
-        //        .excludePathPatterns("/api/v1/accounts/email-code:send");
+        registry.addInterceptor(new TraceInterceptor())
+                .addPathPatterns("/**");
+        registry.addInterceptor(new AuthingInterceptor())
+                .addPathPatterns("/api/v1/auth/**")
+                .addPathPatterns("/api/v1/**");
     }
 
     @Override

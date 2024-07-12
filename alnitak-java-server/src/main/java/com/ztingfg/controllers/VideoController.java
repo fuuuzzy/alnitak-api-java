@@ -1,9 +1,6 @@
 package com.ztingfg.controllers;
 
-import com.ztingfg.bo.video.VideoDesc;
-import com.ztingfg.bo.video.VideoInfo;
-import com.ztingfg.bo.video.VideoReview;
-import com.ztingfg.bo.video.VideoTitle;
+import com.ztingfg.bo.video.*;
 import com.ztingfg.comment.GenericResult;
 import com.ztingfg.cqrs.cmd.VideoUpdate;
 import com.ztingfg.entities.Video;
@@ -121,5 +118,30 @@ public class VideoController {
     public GenericResult<Map<String, Object>> getReviewResourceList(@RequestParam("vid") Long vid) {
         List<com.ztingfg.entities.Resource> resources = videoService.getReviewResourceList(vid);
         return GenericResult.success(Map.of("resources", resources));
+    }
+
+    @GetMapping("/v1/video/getVideoListManage")
+    public GenericResult<Map<String, Object>> getVideoListManage(Pagination pagination) {
+        PaginationResult<VideoResult> videoResults = videoService.getVideoListManage(pagination);
+        return GenericResult.success(Map.of("list", videoResults.getData(), "total", videoResults.getTotal()));
+    }
+
+    @DeleteMapping("/v1/video/deleteVideoManage/{vid}")
+    public GenericResult<Object> deleteVideoManage(@PathVariable("vid") String vid) {
+        videoService.removeById(vid);
+        return GenericResult.success();
+    }
+
+    @GetMapping("/v1/video/getResourceQualityManage")
+    public GenericResult<Object> getResourceQualityManage(@RequestParam("resourceId") Long resourceId) {
+        List<String> quality = videoService.getResourceQuality(resourceId);
+        return GenericResult.success(Map.of("quality", quality));
+    }
+
+    @GetMapping("/v1/video/getVideoFileManage")
+    public GenericResult<Map<String, String>> getVideoFileManage(@RequestParam("resourceId") Long resourceId,
+                                                                 @RequestParam("quality") String quality) {
+        String url = videoService.getVideoFile(resourceId, quality);
+        return GenericResult.success(Map.of("quality", url));
     }
 }

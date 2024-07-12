@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class VideoReview {
+public class VideoResult {
 
     private Long vid;
 
@@ -32,7 +32,9 @@ public class VideoReview {
 
     private Long duration;
 
-    private Long partitionId;
+    private Long clicks;
+
+    private Long partition;
 
     private User author;
 

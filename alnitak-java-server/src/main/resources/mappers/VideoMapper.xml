@@ -41,6 +41,26 @@
         </association>
     </resultMap>
 
+    <resultMap id="VideoResult" type="com.ztingfg.bo.video.VideoResult">
+        <id property="vid" column="v_id"/>
+        <result property="title" column="v_title"/>
+        <result property="cover" column="cover"/>
+        <result property="desc" column="desc"/>
+        <result property="duration" column="v_duration"/>
+        <result property="partition" column="partition_id"/>
+        <result property="clicks" column="clicks"/>
+        <result property="tags" column="tags"/>
+        <result property="copyright" column="copyright"/>
+        <association property="author" javaType="user">
+            <result property="id" column="u_id"/>
+            <result property="username" column="username"/>
+            <result property="sign" column="sign"/>
+            <result property="avatar" column="avatar"/>
+            <result property="spaceCover" column="space_cover"/>
+            <result property="gender" column="gender"/>
+        </association>
+    </resultMap>
+
     <resultMap id="VideoDesc" type="com.ztingfg.bo.video.VideoDesc">
         <id property="vid" column="v_id"/>
         <id property="uid" column="v_uid"/>
@@ -167,8 +187,30 @@
                v.uid        as v_uid,
                v.cover,
                v.partition_id,
-               v.clicks,
                v.desc,
+               v.created_at as v_created_at,
+               v.duration   as v_duration,
+               v.copyright,
+               u.id         as u_id,
+               u.username,
+               u.sign,
+               u.avatar,
+               u.space_cover,
+               u.gender
+        from (select *
+              from video
+              limit ${page.offset},${page.limit}) v
+                 inner join user u on u.id = v.uid
+    </select>
+
+    <select id="getVideoListManage" resultMap="VideoResult">
+        select v.id         as v_id,
+               v.title      as v_title,
+               v.uid        as v_uid,
+               v.cover,
+               v.partition_id,
+               v.desc,
+               v.clicks,
                v.created_at as v_created_at,
                v.duration   as v_duration,
                v.copyright,

@@ -103,6 +103,10 @@ public class User {
     @JsonIgnore
     private String role;
 
+    @JsonIgnore
+    @TableField(exist = false)
+    private Role roleInfo;
+
     /**
      * 颜值
      */

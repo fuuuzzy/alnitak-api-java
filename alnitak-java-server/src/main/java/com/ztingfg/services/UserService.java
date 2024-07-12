@@ -83,16 +83,17 @@ public class UserService extends ServiceImpl<UserMapper, User> implements IServi
     }
 
     public void register(RegisterRequest registerRequest) {
-        String code = registerRequest.getCode();
+        //String code = registerRequest.getCode();
         String email = registerRequest.getEmail();
         String password = registerRequest.getPassword();
 
-        sendService.validateCode(email, code);
+        //sendService.validateCode(email, code);
 
         String salt = StringUtil.randStr(32);
         String dbPassword = generatePassword(email, salt, password);
 
-        User user = User.builder().email(email).password(dbPassword)
+        User user = User.builder().username("user_" + email)
+                .email(email).password(dbPassword)
                 .salt(salt).build();
         try {
             this.save(user);

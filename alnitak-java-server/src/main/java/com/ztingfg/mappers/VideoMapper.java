@@ -3,6 +3,7 @@ package com.ztingfg.mappers;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.ztingfg.bo.video.VideoDesc;
 import com.ztingfg.bo.video.VideoInfo;
+import com.ztingfg.bo.video.VideoResult;
 import com.ztingfg.bo.video.VideoReview;
 import com.ztingfg.entities.Video;
 import com.ztingfg.pagination.Pagination;
@@ -26,4 +27,6 @@ public interface VideoMapper extends BaseMapper<Video> {
                              @Param("partitionId") Long partitionId);
 
     List<VideoReview> getReviewList(Pagination pagination);
+
+    List<VideoResult> getVideoListManage(Pagination pagination);
 }

@@ -7,8 +7,10 @@ import com.ztingfg.bo.TokenInfo;
 import com.ztingfg.comment.BizStatus;
 import com.ztingfg.comment.RequestContext;
 import com.ztingfg.comment.exception.BusinessException;
+import com.ztingfg.entities.Role;
 import com.ztingfg.entities.User;
 import com.ztingfg.helpers.Applications;
+import com.ztingfg.services.RoleService;
 import com.ztingfg.services.TokenService;
 import com.ztingfg.services.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -40,6 +42,9 @@ public class AuthingInterceptor implements HandlerInterceptor {
         TokenInfo tokenInfo = tokenService.verifyToken(token);
 
         User user = userService.queryAccountById(tokenInfo.getAccountId());
+        RoleService roleService = Applications.getBean(RoleService.class);
+        Role role = roleService.lambdaQuery().eq(Role::getCode, user.getRole()).one();
+        user.setRoleInfo(role);
         RequestContext.setUser(user);
         return true;
     }
