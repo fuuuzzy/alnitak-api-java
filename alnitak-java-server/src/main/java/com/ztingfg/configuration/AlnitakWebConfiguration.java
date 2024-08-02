@@ -8,10 +8,7 @@ import com.ztingfg.interceptors.TraceInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
-import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.*;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -29,8 +26,14 @@ public class AlnitakWebConfiguration implements WebMvcConfigurer {
         registry.addInterceptor(new TraceInterceptor())
                 .addPathPatterns("/**");
         registry.addInterceptor(new AuthingInterceptor())
-                .addPathPatterns("/api/v1/auth/**")
+                .excludePathPatterns("/api/v1/auth/**")
                 .addPathPatterns("/api/v1/**");
+    }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/upload/**")
+                .addResourceLocations("file:" + System.getProperty("user.dir") + "/upload/");
     }
 
     @Override

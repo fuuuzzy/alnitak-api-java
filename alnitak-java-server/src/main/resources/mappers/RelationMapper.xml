@@ -2,4 +2,84 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ztingfg.mappers.RelationMapper">
 
+    <resultMap id="Followings" type="com.ztingfg.bo.Following">
+        <id property="relation" column="relation"/>
+        <collection property="user" ofType="user">
+            <result property="id" column="u_id"/>
+            <result property="username" column="username"/>
+            <result property="sign" column="sign"/>
+            <result property="avatar" column="avatar"/>
+            <result property="spaceCover" column="space_cover"/>
+            <result property="gender" column="gender"/>
+        </collection>
+    </resultMap>
+
+    <select id="getFollowings" resultMap="Followings">
+        select r.relation,
+               u.id as u_id,
+               u.username,
+               u.sign,
+               u.avatar,
+               u.avatar,
+               u.space_cover,
+               u.gender
+        from user u
+                 inner join (select uid as id, relation
+                             from relation
+                             where uid = #{userId}
+                               and relation in (1, 2)
+                             union all
+                             select target_uid as id, relation
+                             from relation
+                             where target_uid = #{userId}
+                               and relation in (2)) r
+                            on u.id = r.id
+        limit ${page.offset},${page.limit}
+    </select>
+
+
+    <select id="getFollowers" resultMap="Followings">
+        select r.relation,
+               u.id as u_id,
+               u.username,
+               u.sign,
+               u.avatar,
+               u.avatar,
+               u.space_cover,
+               u.gender
+        from user u
+                 inner join (select uid as id, relation
+                             from relation
+                             where uid = #{userId}
+                               and relation in (2)
+                             union all
+                             select target_uid as id, relation
+                             from relation
+                             where target_uid = #{userId}
+                               and relation in (1)) r
+                            on u.id = r.id
+        limit ${page.offset},${page.limit}
+    </select>
+
+    <select id="getFollowCount" resultType="com.ztingfg.bo.FollowCount">
+        select count(id) as followers, 0
+        from relation
+        where uid = #{userId}
+          and relation in (2)
+        union all
+        select count(id) as followers, 0
+        from relation
+        where target_uid = #{userId}
+          and relation in (1)
+        union all
+        select 0, count(id) as following
+        from relation
+        where uid = #{userId}
+          and relation in (1, 2)
+        union all
+        select 0, count(id) as following
+        from relation
+        where target_uid = #{userId}
+          and relation in (2)
+    </select>
 </mapper>

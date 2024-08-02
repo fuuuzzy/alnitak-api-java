@@ -2,8 +2,8 @@ package com.ztingfg.services;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.ztingfg.entities.Review;
-import com.ztingfg.mappers.ReviewMapper;
+import com.ztingfg.entities.MsgAnnounce;
+import com.ztingfg.mappers.MsgAnnounceMapper;
 import org.springframework.stereotype.Service;
 
 /**
@@ -15,6 +15,6 @@ import org.springframework.stereotype.Service;
  * @since 2024-07-10
  */
 @Service
-public class ReviewServiceImp extends ServiceImpl<ReviewMapper, Review> implements IService<Review> {
+public class MsgAnnounceService extends ServiceImpl<MsgAnnounceMapper, MsgAnnounce> implements IService<MsgAnnounce> {
 
 }

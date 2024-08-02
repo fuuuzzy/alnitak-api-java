@@ -31,7 +31,7 @@ public class PartitionController {
     }
 
     @DeleteMapping("/v1/partition/deletePartition/{pid}")
-    public GenericResult<Object> deletePartition(@PathVariable Long pid) {
+    public GenericResult<Object> deletePartition(@PathVariable("pid") Long pid) {
         partitionService.removeById(pid);
         return GenericResult.success();
     }

@@ -2,4 +2,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ztingfg.mappers.MenuMapper">
 
+    <select id="getUserMenu" resultType="menu">
+        select m.*
+        from user u
+                 inner join role r on u.role = r.code and u.id = #{userId}
+                 left join role_menu rm on r.id = rm.role_id
+                 inner join menu m on m.id = rm.menu_id;
+    </select>
+
+
+    <select id="getRoleMenu" resultType="menu">
+        select m.*
+        from role r
+                 inner join role_menu rm on r.id = rm.role_id and r.code = #{code}
+                 inner join menu m on m.id = rm.menu_id;
+    </select>
 </mapper>

@@ -33,6 +33,17 @@
             <artifactId>javacv-platform</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.bytedeco</groupId>
+            <artifactId>ffmpeg-platform-gpl</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+
     </dependencies>
 
 </project>

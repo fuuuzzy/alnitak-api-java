@@ -10,6 +10,7 @@ import com.ztingfg.comment.exception.BusinessException;
 import com.ztingfg.entities.User;
 import com.ztingfg.entities.Video;
 import com.ztingfg.entities.VideoIndexFile;
+import com.ztingfg.enums.ReviewStatusEnum;
 import com.ztingfg.mappers.ResourceMapper;
 import com.ztingfg.mappers.VideoIndexFileMapper;
 import com.ztingfg.mappers.VideoMapper;
@@ -50,7 +51,7 @@ public class UploadService {
 
     private static final Logger logger = LoggerFactory.getLogger(UploadService.class);
 
-    public String uploadFile(MultipartFile file, String path) {
+    public String uploadFile(MultipartFile file, String path, boolean isVideo) {
         File directory = new File(localPath + path);
         if (!directory.exists() && !directory.mkdirs()) {
             throw new BusinessException(BizStatus.mkdirDirectoryError);
@@ -60,7 +61,7 @@ public class UploadService {
             throw new BusinessException(BizStatus.FilenameNotExists);
         }
         try {
-            String md5 = DigestUtils.md5DigestAsHex(file.getInputStream());
+            String md5 = isVideo ? originalFilename : DigestUtils.md5DigestAsHex(file.getInputStream());
             String extension = "." + Files.getFileExtension(originalFilename);
             String filename = md5 + extension;
             if (!exists(path + filename)) {
@@ -85,7 +86,7 @@ public class UploadService {
      */
     @Deprecated(since = "not use", forRemoval = true)
     private String getMd5(InputStream inputStream) {
-        try {
+        try (inputStream) {
             MessageDigest md5 = MessageDigest.getInstance("md5");
             byte[] buffer = new byte[8192];
             int length;
@@ -96,14 +97,6 @@ public class UploadService {
         } catch (Exception e) {
             logger.error("文件md5失败，error ={}", e.getMessage());
             throw new BusinessException(BizStatus.FileUploadError);
-        } finally {
-            try {
-                if (inputStream != null) {
-                    inputStream.close();
-                }
-            } catch (IOException e) {
-                logger.error("文件流关闭失败，error ={}", e.getMessage());
-            }
         }
     }
 
@@ -118,17 +111,17 @@ public class UploadService {
                     .copyright(false)
                     .uid(user.getId())
                     .duration(duration.doubleValue())
-                    .status(0L).build();
+                    .status(ReviewStatusEnum.NO_AUDITS.getCode()).build();
             videoMapper.insert(video);
             com.ztingfg.entities.Resource resource = com.ztingfg.entities.Resource.builder()
-                    .status(0L)
+                    .status(ReviewStatusEnum.NO_AUDITS.getCode())
                     .title(System.currentTimeMillis() + "")
                     .vid(video.getId())
                     .uid(user.getId())
                     .duration(duration.doubleValue()).build();
             resourceMapper.insert(resource);
 
-            String url = uploadFile(videoFile, path);
+            String url = uploadFile(videoFile, path, true);
 
             VideoIndexFile videoIndexFile = VideoIndexFile.builder()
                     .dirName(path)
@@ -156,10 +149,10 @@ public class UploadService {
             User user = RequestContext.getUser();
             Long duration = VideoUtil.getVideoDuration(video.getInputStream());
 
-            String url = uploadFile(video, path);
+            String url = uploadFile(video, path, true);
 
             com.ztingfg.entities.Resource resource = com.ztingfg.entities.Resource.builder()
-                    .status(0L)
+                    .status(ReviewStatusEnum.NO_AUDITS.getCode())
                     .title(System.currentTimeMillis() + "")
                     .vid(vid)
                     .uid(user.getId())

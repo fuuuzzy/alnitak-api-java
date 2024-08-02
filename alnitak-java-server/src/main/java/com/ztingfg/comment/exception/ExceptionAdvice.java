@@ -15,10 +15,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -26,13 +25,12 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-@ControllerAdvice
+@RestControllerAdvice
 public class ExceptionAdvice {
 
     private final Logger logger = LoggerFactory.getLogger(ExceptionAdvice.class);
 
     @ExceptionHandler(BusinessException.class)
-    @ResponseBody
     public ResponseEntity<GenericResult<?>> handleBusiness(BusinessException e, HttpServletRequest httpServletRequest) {
         logger.error("handle BusinessException {}", e.getMessage(), e);
         GenericResult<?> res = GenericResult.from(e.getBusinessStatus());
@@ -40,7 +38,6 @@ public class ExceptionAdvice {
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
-    @ResponseBody
     public ResponseEntity<GenericResult<?>> resolveValidate(ConstraintViolationException e) {
         GenericResult<?> res = GenericResult.from(BizStatus.IllegalParams, e.getConstraintViolations().stream()
                 .map(ConstraintViolation::getMessageTemplate)
@@ -52,7 +49,6 @@ public class ExceptionAdvice {
      * validation参数校验异常内部处理
      */
     @ExceptionHandler(ValidationException.class)
-    @ResponseBody
     public ResponseEntity<GenericResult<?>> resolveValidate(ValidationException e) {
         logger.error("handle ValidationException {}", e.getMessage());
         String message = e.getMessage();
@@ -67,7 +63,6 @@ public class ExceptionAdvice {
             .collect(Collectors.joining(";"));
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseBody
     public ResponseEntity<GenericResult<?>> handleValidationExceptions(
             MethodArgumentNotValidException ex, HttpServletRequest httpServletRequest) {
         List<ObjectError> allErrors = ex.getBindingResult().getAllErrors();
@@ -90,7 +85,6 @@ public class ExceptionAdvice {
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)
-    @ResponseBody
     public GenericResult<?> resolveUnknownException(Exception e, HttpServletRequest httpServletRequest) {
         if (e instanceof SQLException) {
             logger.error("sql execution exception {}", e.getMessage());

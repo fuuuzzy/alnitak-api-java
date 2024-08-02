@@ -2,4 +2,58 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ztingfg.mappers.ArticleMapper">
 
+    <resultMap id="ArticleInfo" type="com.ztingfg.bo.article.ArticleInfo">
+        <id property="aid" column="a_id"/>
+        <id property="uid" column="a_uid"/>
+        <result property="title" column="v_title"/>
+        <result property="cover" column="cover"/>
+        <result property="content" column="content"/>
+        <result property="tags" column="tags"/>
+        <result property="clicks" column="clicks"/>
+        <result property="partitionId" column="partition_id"/>
+        <result property="status" column="status"/>
+        <result property="copyright" column="copyright"/>
+        <result property="createdAt" column="a_created_at"/>
+        <association property="author" javaType="user">
+            <result property="id" column="u_id"/>
+            <result property="username" column="username"/>
+            <result property="sign" column="sign"/>
+            <result property="avatar" column="avatar"/>
+            <result property="spaceCover" column="space_cover"/>
+            <result property="gender" column="gender"/>
+        </association>
+    </resultMap>
+
+    <select id="getArticles" resultMap="ArticleInfo">
+        select a.id as a_id,
+        a.uid as a_uid,
+        a.title,
+        a.tags,
+        a.clicks,
+        a.partition_id,
+        a.created_at as a_created_at,
+        a.status,
+        a.content,
+        a.copyright,
+        a.cover,
+        u.id as u_id,
+        u.username,
+        u.sign,
+        u.avatar,
+        u.space_cover,
+        gender
+        from article a
+        inner join user u on u.id = a.uid
+        <where>
+            <if test="aid != null">
+                a.id = #{aid}
+            </if>
+            <if test="status != null">
+                a.status = #{status}
+            </if>
+        </where>
+        <if test="page != null">
+            limit #{page.offset}, #{page.limit}
+        </if>
+    </select>
 </mapper>

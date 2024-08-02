@@ -62,5 +62,5 @@ public class Review {
      * 类型:0视频、1文章
      */
     @TableField("type")
-    private Byte type;
+    private Integer type;
 }

@@ -28,5 +28,5 @@ public interface VideoMapper extends BaseMapper<Video> {
 
     List<VideoReview> getReviewList(Pagination pagination);
 
-    List<VideoResult> getVideoListManage(Pagination pagination);
+    List<VideoResult> getVideoListManage(@Param("page") Pagination pagination);
 }

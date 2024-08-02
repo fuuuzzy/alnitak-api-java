@@ -28,6 +28,7 @@
         <jwt.version>0.9.3</jwt.version>
         <lombok.version>1.18.32</lombok.version>
         <bytedeco.version>1.5.5</bytedeco.version>
+        <ffmpeg.version>6.0-1.5.9</ffmpeg.version>
     </properties>
 
     <dependencyManagement>
@@ -105,6 +106,12 @@
                 <groupId>org.bytedeco</groupId>
                 <artifactId>javacv-platform</artifactId>
                 <version>${bytedeco.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.bytedeco</groupId>
+                <artifactId>ffmpeg-platform-gpl</artifactId>
+                <version>${ffmpeg.version}</version>
             </dependency>
 
         </dependencies>

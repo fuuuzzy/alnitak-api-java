@@ -120,8 +120,8 @@ public class VideoController {
         return GenericResult.success(Map.of("resources", resources));
     }
 
-    @GetMapping("/v1/video/getVideoListManage")
-    public GenericResult<Map<String, Object>> getVideoListManage(Pagination pagination) {
+    @PostMapping("/v1/video/getVideoListManage")
+    public GenericResult<Map<String, Object>> getVideoListManage(@RequestBody Pagination pagination) {
         PaginationResult<VideoResult> videoResults = videoService.getVideoListManage(pagination);
         return GenericResult.success(Map.of("list", videoResults.getData(), "total", videoResults.getTotal()));
     }

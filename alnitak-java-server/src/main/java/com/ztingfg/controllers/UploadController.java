@@ -25,7 +25,7 @@ public class UploadController {
 
     @PostMapping("/v1/upload/image")
     public GenericResult<Map<String, String>> uploadImage(@RequestParam("image") MultipartFile image) {
-        String url = uploadService.uploadFile(image, FilePathEnum.IMAGE.getPath());
+        String url = uploadService.uploadFile(image, FilePathEnum.IMAGE.getPath(), false);
         return GenericResult.success(Map.of("url", url));
     }
 
